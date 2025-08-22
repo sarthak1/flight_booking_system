@@ -1,0 +1,14 @@
+sequenceDiagram
+  participant W as WhatsApp (via Twilio)
+  participant API as FastAPI /whatsapp/webhook
+  participant PDF as ticket_pdf.generate_ticket_pdf
+  participant FS as Static /tickets
+  participant T as Twilio REST API
+
+  W->>API: confirm
+  API->>PDF: generate_ticket_pdf(info, base_url)
+  PDF-->>API: ticket_id, pnr, seats[], gate
+  API->>T: messages.create(media_url=BASE_URL/tickets/{ticket_id}.pdf)
+  API->>FS: (PDF saved to ./tickets/{ticket_id}.pdf)
+  API-->>W: TwiML response with link and PNR/Seats/Gate
+

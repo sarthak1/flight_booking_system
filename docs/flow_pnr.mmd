@@ -1,0 +1,8 @@
+flowchart LR
+  A[User sends 'pnr ABC123'] --> B[API scans Booking.flight_meta for PNR]
+  B -->|found| C[Return ticket_url]
+  B -->|missing| D[Reply 'PNR not found']
+
+  E["GET /booking/:pnr"] --> F["Return JSON: pnr, seats, gate, ticket_url, depart_at"]
+  G["GET /tickets/by-pnr/:pnr.pdf"] --> H["Serve tickets/<ticket_id>.pdf"]
+
